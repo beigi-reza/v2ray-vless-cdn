@@ -18,12 +18,12 @@ fi
 
 # Install dependencies
 echo "[1/7] Installing dependencies..."
-#apt-get update
-#apt-get install -y docker.io docker-compose certbot
+apt-get update
+apt-get install -y docker.io docker-compose certbot
 
 # Start Docker service
-#systemctl start docker
-#systemctl enable docker
+systemctl start docker
+systemctl enable docker
 
 # Get domain name
 echo ""
