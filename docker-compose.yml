@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+  v2ray:
+    image: v2fly/v2fly-core:latest
+    container_name: v2ray
+    restart: unless-stopped
+    ports:
+      - "443:443"
+    volumes:
+      - ./v2ray/config.json:/etc/v2ray/config.json:ro
+      - ./v2ray/certs:/etc/v2ray/certs:ro
+    networks:
+      - v2ray-network
+    command: ["run", "-c", "/etc/v2ray/config.json"]
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-v2ray
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/html:/usr/share/nginx/html:ro
+      - ./v2ray/certs:/etc/nginx/certs:ro
+    networks:
+      - v2ray-network
+    depends_on:
+      - v2ray
+
+networks:
+  v2ray-network:
+    driver: bridge
